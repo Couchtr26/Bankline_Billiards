@@ -127,27 +127,27 @@ def collide_balls(ball1, vel1, ball2, vel2):
     if dist == 0:
         return vel1, vel2
     
-    # Normalize vector between balls
+    
     nx = dx / dist
     ny = dy / dist
     
-    # Relative velocity in normal direction
+    
     dvx = vel1[0] - vel2[0]
     dvy = vel1[1] - vel2[1]
     vn = dvx * nx + dvy * ny
     
-    # If balls are moving apart, do nothing
+    
     if vn > 0:
         return vel1, vel2
     
-    # Calculate impulse for elastic collision
+    
     impulse = -2 * vn / 2
     
-    # Update velocities
+    
     vel1_new = [vel1[0] + impulse * nx, vel1[1] + impulse * ny]
     vel2_new = [vel2[0] - impulse * nx, vel2[1] - impulse * ny]
     
-    # Positional correction to prevent overlap
+    
     overlap = min_dist - dist
     correction_x = nx * overlap / 2
     correction_y = ny * overlap / 2
@@ -241,7 +241,7 @@ while running:
                 object_in_motion = False
                 foul_committed = False
 
-    # Move cue ball
+    
     if not (abs(cue_velocity[0]) < velocity_threshold and abs(cue_velocity[1]) < velocity_threshold):
         move_ball(cue_ball, cue_velocity)
         bounce_ball(cue_ball, cue_velocity)
@@ -263,7 +263,7 @@ while running:
             object_velocity = [0.0, 0.0]
             object_in_motion = False
 
-    # Move object ball
+    
     if object_in_motion:
         move_ball(object_ball, object_velocity)
         bounce_ball(object_ball, object_velocity)
@@ -299,7 +299,7 @@ while running:
                 turn = 1 if practice_mode else 3 - turn
                 shot_taken = False
 
-    # Switch turn when both balls stopped, shot was taken, and no foul committed
+    
     if (abs(cue_velocity[0]) < velocity_threshold and abs(cue_velocity[1]) < velocity_threshold and
         abs(object_velocity[0]) < velocity_threshold and abs(object_velocity[1]) < velocity_threshold and
         shot_taken and not foul_committed):
@@ -307,14 +307,14 @@ while running:
         shot_taken = False
         print(f"Turn switched to {'You' if turn == 1 else 'AI'}")
 
-    # AI turn
+    
     if (turn == 2 and
         abs(cue_velocity[0]) < velocity_threshold and abs(cue_velocity[1]) < velocity_threshold and
         abs(object_velocity[0]) < velocity_threshold and abs(object_velocity[1]) < velocity_threshold and
         not shot_taken and not practice_mode):
         ai_take_shot()
 
-    # Foul checks if cue ball pockets or goes off table or object ball off table
+    
     if detect_pocket(cue_ball) or is_off_table(cue_ball) or is_off_table(object_ball):
         fouls += 1
         foul_committed = True
